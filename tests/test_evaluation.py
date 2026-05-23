@@ -1,14 +1,13 @@
 """Tests for glm_pricing.evaluation module."""
 
 import numpy as np
-import pytest
 
 from glm_pricing.evaluation import (
+    calibration,
+    gamma_deviance,
     gini,
     lift_chart,
-    calibration,
     poisson_deviance,
-    gamma_deviance,
 )
 
 

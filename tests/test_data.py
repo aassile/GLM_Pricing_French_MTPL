@@ -1,14 +1,10 @@
 """Tests for glm_pricing.data module."""
 
 import io
-import os
-import tempfile
 
 import pandas as pd
-import pytest
 
 from glm_pricing.data import load_freq, load_sev, merge_freq_sev
-
 
 FREQ_CSV = """IDpol,ClaimNb,Exposure,Area,VehPower,VehAge,DrivAge,BonusMalus,VehBrand,VehGas,Density,Region
 1,0,0.5,A,5,3,35,75,B1,Regular,100,R11

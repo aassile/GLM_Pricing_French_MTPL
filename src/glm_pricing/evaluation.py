@@ -37,7 +37,9 @@ def gini(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     order_perf = np.argsort(-y_true)
     y_true_perf = y_true[order_perf]
     lorenz_perf = np.cumsum(y_true_perf) / y_true.sum()
-    gini_perfect = (lorenz_perf.sum() - lorenz_perf[-1] / 2 - 0.5 * (n - 1)) / (n - 1) if n > 1 else 1.0
+    gini_perfect = (
+        (lorenz_perf.sum() - lorenz_perf[-1] / 2 - 0.5 * (n - 1)) / (n - 1) if n > 1 else 1.0
+    )
     return float(gini_model / gini_perfect) if gini_perfect != 0 else 0.0
 
 
@@ -126,7 +128,9 @@ def poisson_deviance(
     y_pred = np.asarray(y_pred, dtype=float).clip(min=1e-10)
     mask = y_true > 0
     dev = np.zeros_like(y_true)
-    dev[mask] = 2 * (y_true[mask] * np.log(y_true[mask] / y_pred[mask]) - (y_true[mask] - y_pred[mask]))
+    dev[mask] = 2 * (
+        y_true[mask] * np.log(y_true[mask] / y_pred[mask]) - (y_true[mask] - y_pred[mask])
+    )
     dev[~mask] = 2 * y_pred[~mask]
     if exposure is not None:
         w = np.asarray(exposure, dtype=float)

@@ -23,7 +23,16 @@ def load_freq(path: str) -> pd.DataFrame:
     if "IDpol" in df.columns:
         df["IDpol"] = df["IDpol"].astype(str)
     # Ensure numeric columns are correct type
-    numeric_cols = ["ClaimNb", "Exposure", "VehPower", "VehAge", "DrivAge", "BonusMalus", "Density", "ClaimAmountTotal"]
+    numeric_cols = [
+        "ClaimNb",
+        "Exposure",
+        "VehPower",
+        "VehAge",
+        "DrivAge",
+        "BonusMalus",
+        "Density",
+        "ClaimAmountTotal",
+    ]
     for col in numeric_cols:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")

@@ -7,16 +7,24 @@ from typing import Any
 import numpy as np
 
 from glm_pricing.data import load_freq, load_sev, merge_freq_sev
+from glm_pricing.evaluation import gamma_deviance, gini, poisson_deviance
+from glm_pricing.models import fit_frequency, fit_severity, predict_pure_premium
 from glm_pricing.preprocessing import (
-    cap_exposure,
     cap_claimnb,
+    cap_exposure,
     prepare_features,
     train_test_split_policy,
 )
-from glm_pricing.models import fit_frequency, fit_severity, predict_pure_premium
-from glm_pricing.evaluation import poisson_deviance, gamma_deviance, gini
 
-FREQ_FEATURES = ["BonusMalusCapped", "LogDensity", "VehPower", "VehAgeBin", "DrivAgeBin", "VehGas", "Area"]
+FREQ_FEATURES = [
+    "BonusMalusCapped",
+    "LogDensity",
+    "VehPower",
+    "VehAgeBin",
+    "DrivAgeBin",
+    "VehGas",
+    "Area",
+]
 SEV_FEATURES = ["BonusMalusCapped", "LogDensity", "VehPower", "VehGas", "Area"]
 
 
@@ -69,14 +77,20 @@ def run_pipeline(freq_path: str, sev_path: str) -> dict[str, Any]:
     pure_premium_test = predict_pure_premium(freq_model, sev_model, test)
 
     # --- Evaluate ---
-    pois_dev = poisson_deviance(test["ClaimNb"].values, freq_pred_test.values, exposure=test["Exposure"].values)
+    pois_dev = poisson_deviance(
+        test["ClaimNb"].values, freq_pred_test.values, exposure=test["Exposure"].values
+    )
     sev_test = test[test["ClaimNb"] > 0].copy()
     sev_test["AvgClaim"] = sev_test["ClaimAmountTotal"] / sev_test["ClaimNb"].clip(lower=1)
-    gam_dev = gamma_deviance(
-        sev_test["AvgClaim"].values,
-        sev_model.predict(sev_test).values,
-        weights=sev_test["ClaimNb"].values,
-    ) if len(sev_test) > 0 else float("nan")
+    gam_dev = (
+        gamma_deviance(
+            sev_test["AvgClaim"].values,
+            sev_model.predict(sev_test).values,
+            weights=sev_test["ClaimNb"].values,
+        )
+        if len(sev_test) > 0
+        else float("nan")
+    )
 
     freq_gini = gini(test["ClaimNb"].values, freq_pred_test.values)
 

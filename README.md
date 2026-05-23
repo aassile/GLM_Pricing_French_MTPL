@@ -1,6 +1,9 @@
 # GLM Pricing – French Motor Third-Party Liability (freMTPL)
 
 [![CI](https://github.com/aassile/GLM_Pricing_French_MTPL/actions/workflows/ci.yml/badge.svg)](https://github.com/aassile/GLM_Pricing_French_MTPL/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11-blue)](https://www.python.org/)
+[![Ruff](https://img.shields.io/badge/lint-ruff-261230)](https://github.com/astral-sh/ruff)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ## Objective
 
